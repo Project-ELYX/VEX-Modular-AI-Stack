@@ -9,3 +9,5 @@ class Message(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: List[Message]
+    stream: bool = False
+    remote: bool = False
