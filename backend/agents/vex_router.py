@@ -60,7 +60,7 @@ class VexRouter:
         if not await self.validator.validate(message):
             raise ValueError("Message failed validation")
 
-        context = self.memory_manager.search(message)
+        context = await self.memory_manager.search(message)
         prompt = self.personality_core.build_prompt(message, context)
 
         if stream:
@@ -69,14 +69,14 @@ class VexRouter:
                 async for chunk in self.personality_core.generate_response(prompt, stream=True):
                     accumulated += chunk
                     yield chunk
-                self.memory_manager.add_memory(message)
-                self.memory_manager.add_memory(accumulated)
+                await self.memory_manager.add_memory(message)
+                await self.memory_manager.add_memory(accumulated)
 
             return _generator()
 
         response = await self.personality_core.generate_response(prompt, stream=False)
         if isinstance(response, str):
-            self.memory_manager.add_memory(message)
-            self.memory_manager.add_memory(response)
+            await self.memory_manager.add_memory(message)
+            await self.memory_manager.add_memory(response)
             return response
         return ""
