@@ -13,7 +13,7 @@ VEX's modular AI stack build that will include back and frontend API behaviour, 
 ```bash
 cd backend
 pip install -r requirements.txt
-python main.py
+uvicorn backend.main:app --reload
 ```
 
 ### Frontend
