@@ -26,6 +26,7 @@ except Exception:  # pragma: no cover - not installed
     Llama = None  # type: ignore
 
 import httpx
+from ..api.config import get_runtime_config
 
 
 class VexPersonalityCore:
@@ -112,7 +113,9 @@ class VexPersonalityCore:
         if not self.remote_url:
             raise RuntimeError("No remote URL configured")
 
-        headers = {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
+        cfg = get_runtime_config()
+        api_key = self.api_key or cfg.get("openrouter_api_key") or cfg.get("anthropic_api_key")
+        headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
         client = httpx.AsyncClient(headers=headers, timeout=60.0)
 
         if not stream:

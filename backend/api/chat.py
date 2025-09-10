@@ -4,6 +4,7 @@ from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import StreamingResponse
 
 from ..agents.vex_router import VexRouter
+from .config import get_runtime_config
 
 router = APIRouter()
 
@@ -19,8 +20,9 @@ async def chat(request: Request):
     """
 
     payload = await request.json()
+    cfg = get_runtime_config()
     message = payload.get("message", "")
-    mode = payload.get("mode", "local")
+    mode = payload.get("mode", cfg.get("mode", "local"))
     stream = payload.get("stream", False)
 
     vex_router = VexRouter()
@@ -54,7 +56,8 @@ async def chat_ws(websocket: WebSocket) -> None:
         while True:
             data = await websocket.receive_json()
             message = data.get("message", "")
-            mode = data.get("mode", "local")
+            cfg = get_runtime_config()
+            mode = data.get("mode", cfg.get("mode", "local"))
             vex_router.set_remote(mode == "remote")
 
             result = await vex_router.handle_message(message, stream=stream)
