@@ -2,14 +2,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# Copy dependency file and install
+COPY backend/requirements.txt ./backend/requirements.txt
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
 # Copy project files
 COPY . .
 
-# Install dependencies if present
-RUN if [ -f requirements.txt ]; then \
-        pip install --no-cache-dir -r requirements.txt; \
-    fi
-
 EXPOSE 8000
 
-CMD ["python", "main.py"]
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
