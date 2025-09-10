@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
-import Chat from './Chat';
+import React from 'react';
 import StatusBar from './components/StatusBar';
 
-const NeuroHUD = () => {
-  const [status, setStatus] = useState('Disconnected');
-
+const NeuroHUD = ({ status }) => {
   return (
     <div className="neurohud">
-      <Chat onStatusChange={setStatus} />
       <StatusBar status={status} />
     </div>
   );
