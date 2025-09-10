@@ -9,7 +9,10 @@ class Settings(BaseSettings):
     Loads variables from ``.env`` and provides default paths and flags.
     """
 
-    model_config = SettingsConfigDict(env_file=BASE_DIR / '.env', env_file_encoding='utf-8')
+    model_config = SettingsConfigDict(
+        env_file=[BASE_DIR.parent / '.env', BASE_DIR / '.env'],
+        env_file_encoding='utf-8',
+    )
 
     # Paths
     base_path: Path = BASE_DIR
