@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import LogPanel from './components/LogPanel';
-import { createWebSocket } from './websocket';
+import { createWebSocket, sendMessage } from './websocket';
 
 const Chat = ({ onStatusChange }) => {
   const [input, setInput] = useState('');
@@ -22,7 +22,9 @@ const Chat = ({ onStatusChange }) => {
     if (!input.trim()) return;
     setMessages((prev) => [...prev, { role: 'user', content: input }]);
     setStream('');
-    wsRef.current && wsRef.current.send(input);
+    if (wsRef.current) {
+      sendMessage(wsRef.current, input);
+    }
     setInput('');
   };
 
