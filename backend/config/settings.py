@@ -14,9 +14,16 @@ class Settings(BaseSettings):
     # Paths
     base_path: Path = BASE_DIR
     models_path: Path = BASE_DIR.parent / 'models'
+    local_model_path: Path | None = None
 
     # API keys
     openai_api_key: str | None = None
+    openrouter_api_key: str | None = None
+    anthropic_api_key: str | None = None
+
+    # Model settings
+    embedding_model: str | None = 'text-embedding-3-large'
+    vector_backend: str | None = 'faiss'
 
     # Feature flags
     use_gpu: bool = False
