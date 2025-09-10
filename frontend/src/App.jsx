@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
 import NeuroHUD from './NeuroHUD';
 import SettingsPanel from './components/SettingsPanel';
 import './styles.css';
@@ -17,11 +16,5 @@ function App() {
     </div>
   );
 }
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
 
 export default App;
