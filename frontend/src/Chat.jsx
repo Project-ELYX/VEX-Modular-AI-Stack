@@ -12,7 +12,13 @@ const Chat = ({ onStatusChange }) => {
     wsRef.current = createWebSocket({
       onOpen: () => onStatusChange && onStatusChange('Connected'),
       onClose: () => onStatusChange && onStatusChange('Disconnected'),
-      onMessage: (data) => {
+      onMessage: (raw) => {
+        let data;
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          return;
+        }
         if (data.token) {
           setStream((prev) => prev + data.token);
         }
