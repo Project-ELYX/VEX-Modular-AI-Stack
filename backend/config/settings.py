@@ -1,4 +1,7 @@
 from pathlib import Path
+from typing import Literal
+
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +33,17 @@ class Settings(BaseSettings):
 
     # Model settings
     embedding_model: str | None = 'text-embedding-3-large'
-    vector_backend: str | None = 'faiss'
+    vector_backend: Literal["chroma", "qdrant"] = "chroma"
+
+    @field_validator("vector_backend", mode="before")
+    @classmethod
+    def _normalize_vector_backend(cls, v: str | None) -> str:
+        if v is None:
+            return "chroma"
+        v = v.lower()
+        if v not in {"chroma", "qdrant"}:
+            raise ValueError("VECTOR_BACKEND must be 'chroma' or 'qdrant'")
+        return v
 
     # Feature flags
     use_gpu: bool = False

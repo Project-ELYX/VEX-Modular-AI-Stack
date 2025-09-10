@@ -4,7 +4,8 @@ VEX's modular AI stack build that will include back and frontend API behaviour, 
 ## Setup
 1. Clone this repository.
 2. (Optional) Create a Python virtual environment.
-3. Copy `.env.example` to `.env` and update the values.
+3. Copy `.env.example` to `.env` and update the values (e.g. set `VECTOR_BACKEND`
+   to `chroma` or `qdrant`).
 4. Place any model files in the `models` directory.
 
 ## Quick Start
