@@ -1,7 +1,7 @@
 export function createWebSocket({ onMessage, onOpen, onClose }) {
   const ws = new WebSocket('ws://localhost:8000/api/chat/ws');
   if (onMessage) {
-    ws.onmessage = (event) => onMessage(event.data);
+    ws.onmessage = (event) => onMessage(JSON.parse(event.data));
   }
   if (onOpen) {
     ws.onopen = onOpen;
