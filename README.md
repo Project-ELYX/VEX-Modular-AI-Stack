@@ -30,4 +30,4 @@ cd docker
 docker compose up
 ```
 
-The compose file mounts the `models` directory and `.env` into the backend container. The backend listens on port 8000 and the frontend on port 3000.
+The compose file mounts the `models` directory and `.env` into the backend container. The backend listens on port 8000 and the frontend on port 5173.
