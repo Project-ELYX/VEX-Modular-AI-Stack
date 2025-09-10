@@ -16,7 +16,7 @@ cd "$REPO_ROOT"
 # Configure environment file
 ENV_FILE="$REPO_ROOT/.env"
 if [ ! -f "$ENV_FILE" ]; then
-    cp backend/.env.example "$ENV_FILE"
+    cp .env.example "$ENV_FILE"
 fi
 
 read -p "Enter OpenRouter API key: " openrouter_key

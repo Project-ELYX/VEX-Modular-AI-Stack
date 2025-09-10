@@ -9,3 +9,4 @@ llama-cpp-python==0.3.16
 sentence-transformers==5.1.0
 chromadb==1.0.20
 qdrant-client==1.15.1
+pytest==8.1.1
