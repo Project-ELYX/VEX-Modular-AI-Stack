@@ -3,6 +3,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Potential locations of the ``.env`` file. Search the project root first
+# and fall back to the backend directory for backwards compatibility.
+ENV_FILES = [BASE_DIR.parent / ".env", BASE_DIR / ".env"]
+
 class Settings(BaseSettings):
     """Application settings.
 
@@ -10,8 +14,8 @@ class Settings(BaseSettings):
     """
 
     model_config = SettingsConfigDict(
-        env_file=[BASE_DIR.parent / '.env', BASE_DIR / '.env'],
-        env_file_encoding='utf-8',
+        env_file=ENV_FILES,
+        env_file_encoding="utf-8",
     )
 
     # Paths
