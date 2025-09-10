@@ -28,18 +28,23 @@ async def chat(request: ChatRequest):
 async def chat_ws(websocket: WebSocket) -> None:
     """WebSocket interface backed by :class:`VexRouter`."""
     stream = websocket.query_params.get("stream", "true").lower() == "true"
-    remote = websocket.query_params.get("remote", "false").lower() == "true"
 
     await websocket.accept()
     vex_router = VexRouter()
-    vex_router.set_remote(remote)
     try:
         while True:
-            data = await websocket.receive_text()
-            result = await vex_router.handle_message(data, stream=stream)
+            data = await websocket.receive_json()
+            message = data.get("message", "")
+            mode = data.get("mode", "local")
+            vex_router.set_remote(mode == "remote")
+
+            result = await vex_router.handle_message(message, stream=stream)
             if stream:
+                accumulated = ""
                 async for token in result:
+                    accumulated += token
                     await websocket.send_json({"token": token})
+                await websocket.send_json({"reply": accumulated})
             else:
                 if isinstance(result, str):
                     await websocket.send_json({"reply": result})
