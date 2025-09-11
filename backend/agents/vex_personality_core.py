@@ -116,18 +116,18 @@ class VexPersonalityCore:
         cfg = get_runtime_config()
         api_key = self.api_key or cfg.get("openrouter_api_key") or cfg.get("anthropic_api_key")
         headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
-        client = httpx.AsyncClient(headers=headers, timeout=60.0)
 
         if not stream:
-            async with client:
+            async with httpx.AsyncClient(headers=headers, timeout=60.0) as client:
                 response = await client.post(self.remote_url, json={"prompt": prompt})
                 response.raise_for_status()
                 data = response.json()
                 return data.get("text", "")
 
         async def _streamer() -> AsyncGenerator[str, None]:
-            async with client.stream("POST", self.remote_url, json={"prompt": prompt}) as resp:
-                async for chunk in resp.aiter_text():
-                    yield chunk
+            async with httpx.AsyncClient(headers=headers, timeout=60.0) as client:
+                async with client.stream("POST", self.remote_url, json={"prompt": prompt}) as resp:
+                    async for chunk in resp.aiter_text():
+                        yield chunk
 
         return _streamer()
