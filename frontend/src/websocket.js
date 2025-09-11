@@ -1,5 +1,12 @@
+function getWebSocketUrl() {
+  const envUrl = import.meta.env.VITE_WS_URL;
+  if (envUrl) return envUrl;
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  return `${protocol}//${window.location.host}/api/chat/ws`;
+}
+
 export function createWebSocket({ onMessage, onOpen, onClose }) {
-  const ws = new WebSocket('ws://localhost:8000/api/chat/ws');
+  const ws = new WebSocket(getWebSocketUrl());
   if (onMessage) {
     ws.onmessage = (event) => onMessage(event.data);
   }
