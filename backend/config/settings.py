@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     models_path: Path = BASE_DIR.parent / 'models'
     local_model_path: Path | None = None
 
+    # Remote inference
+    remote_url: str | None = None
+
     # API keys
     openai_api_key: str | None = None
     openrouter_api_key: str | None = None

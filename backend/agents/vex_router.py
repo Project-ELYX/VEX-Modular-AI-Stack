@@ -17,6 +17,7 @@ from typing import AsyncGenerator, Optional
 from .vex_memory_manager import VexMemoryManager
 from .vex_personality_core import VexPersonalityCore
 from .vex_validator import VexValidator
+from ..config.settings import settings
 
 
 class VexRouter:
@@ -29,7 +30,9 @@ class VexRouter:
         validator: Optional[VexValidator] = None,
         memory_manager: Optional[VexMemoryManager] = None,
     ) -> None:
-        self.personality_core = personality_core or VexPersonalityCore()
+        self.personality_core = personality_core or VexPersonalityCore(
+            remote_url=settings.remote_url
+        )
         self.validator = validator or VexValidator()
         self.memory_manager = memory_manager or VexMemoryManager()
 
